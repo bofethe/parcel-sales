@@ -1,0 +1,21 @@
+{
+  "name": "Parcel Sales Dev",
+  "dockerFile": "Dockerfile",
+  "context": "..",
+  "workspaceFolder": "/app",
+  "mounts": [
+    "source=${localWorkspaceFolder}/data/raw,target=/app/data/raw,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  },
+  "postCreateCommand": "pip install --upgrade pip"
+}

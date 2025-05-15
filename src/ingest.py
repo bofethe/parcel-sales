@@ -60,5 +60,6 @@ def load_and_process_data():
     print('✅ Exported to Parquet.')
 
 if __name__ == '__main__':
+    os.chdir(str(Path(__file__).parent.parent))
     unzip_all_zipfiles()
     load_and_process_data()

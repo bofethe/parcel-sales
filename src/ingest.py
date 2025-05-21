@@ -40,18 +40,23 @@ def load_and_process_data():
     sub_path = next(parcel_dir.glob('parcel_sub_names.dbf'), None)
     dor_path = next(parcel_dir.glob('parcel_dor_names.dbf'), None)
 
-    if not all([sales_path, parcel_path, sub_path, dor_path]):
-        raise FileNotFoundError('Missing one or more required .dbf files.')
+    # Find DOR descriptions
+    dor_desc_path = 'docs/DOR_CODES.csv'
+
+    if not all([sales_path, parcel_path, sub_path, dor_path, dor_desc_path]):
+        raise FileNotFoundError('Missing one or more required files.')
 
     # Load data
     df_sales = gpd.read_file(sales_path, encoding='ISO-8859-1')
     df_parcel = gpd.read_file(parcel_path)
     df_sub = gpd.read_file(sub_path)[['SUBCODE', 'SUBNAME']].drop_duplicates()
     df_dor = gpd.read_file(dor_path)
+    df_dor_desc = pd.read_csv(dor_desc_path, encoding='ISO-8859-1')
 
     # Merge descriptions into parcel data
     df_parcel = df_parcel.merge(df_dor, left_on='DOR_C', right_on='DORCODE', how='left').drop(columns=['DOR_C'])
     df_parcel = df_parcel.merge(df_sub, left_on='SUB', right_on='SUBCODE', how='left').drop(columns=['SUB'])
+    df_parcel = df_parcel.merge(df_dor_desc, on='DORCODE')
 
     # Export to Parquet
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)

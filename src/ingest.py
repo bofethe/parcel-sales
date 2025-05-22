@@ -58,6 +58,9 @@ def load_and_process_data():
     df_parcel = df_parcel.merge(df_sub, left_on='SUB', right_on='SUBCODE', how='left').drop(columns=['SUB'])
     df_parcel = df_parcel.merge(df_dor_desc, on='DORCODE')
 
+    # add year to sales data
+    df_sales['S_YEAR'] = df_sales['S_DATE'].dt.year
+
     # Export to Parquet
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     df_sales.to_parquet(PROCESSED_DIR / 'allsales.parquet', engine='pyarrow')

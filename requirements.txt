@@ -2,6 +2,7 @@ certifi==2025.4.26
 geopandas==1.0.1
 folium==0.19.5
 ipykernel==6.29.5
+lightgbm==4.6.0
 mapclassify==2.8.1
 nbformat==5.10.4
 numpy==2.2.5
